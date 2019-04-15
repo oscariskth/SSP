@@ -42,7 +42,10 @@ function checkMove(games, id, move, player){
     let legalMoves = ["sten", "sax", "påse"]
     let idStatus = legalId(games, id)
     if(!idStatus.legal) return idStatus
+    let nameStatus = checkNamePresent(player)
+    if(!nameStatus.legal) return nameStatus
     if(games[id].public.players.indexOf(player) === -1) return {legal:false, message: "Du angav en spelare som inte är med i spelet"}
+    if(!move) return {legal: false, message: "Du måste ange ett drag."}
     if(legalMoves.indexOf(move.toLowerCase()) === -1) return {legal:false, message: "Det var inte ett giltigt drag"}
     if(games[id].private[player]) return {legal:false, message:"Du har redan gjort ditt drag"}
     return {legal: true, message: "Drag ok"}
@@ -51,10 +54,17 @@ function checkMove(games, id, move, player){
 function checkJoin(games, id, player){
     let idStatus = legalId(games, id)
     if(!idStatus.legal) return idStatus
+    let nameStatus = checkNamePresent(player)
+    if(!nameStatus.legal) return nameStatus
     if (games[id].public.players.length !== 1) return {legal: false, message:"Spelet är fullt"}
     if (games[id].public.players[0] === player) return {legal: false, message:"Det namnet är upptaget"}
     return {legal: true, message:"Anslutning ok"}
 
 }
 
-module.exports = {setStatus, checkMove, checkJoin, legalId}
+function checkNamePresent(name){
+    if(!name) return {legal: false, message: "Du måste ange ett namn."}
+    return {legal:true, messsage:"namn angivit"}
+}
+
+module.exports = {setStatus, checkMove, checkJoin, legalId, checkNamePresent}

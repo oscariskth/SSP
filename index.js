@@ -11,9 +11,15 @@ let games = {}
 app.post('/api/games', (req,res) => {
     let name = req.body.name
     let uuid = uuidv1()
+    nameStatus = helpFunctions.checkNamePresent(name)
+    if(!nameStatus.legal){
+        res.json(nameStatus.message)
+        return
+    }
     games[uuid] = {public:{players: [name]}}
     games[uuid].public.status = "Väntar på att spelare 2 ska ansluta"
     games[uuid].public.gameOver = false
+    games[uuid].public.id = uuid
     games[uuid].private = {}
     games[uuid].private[name] = null
     res.json("Spelet skapat, ditt spel-id är: " + uuid);
