@@ -42,7 +42,6 @@ app.post('/api/games/:id/join', (req,res) => {
     games[id].private[name] = null
     helpFunctions.setStatus(games[id])
     
-    console.log(games[id].public.players)
     res.json("Ansluten till spelet")
 
 });
@@ -62,7 +61,6 @@ app.post('/api/games/:id/move', (req,res) => {
     games[id].private[name] = move.toLowerCase()
     helpFunctions.setStatus(games[id])
     res.json("Drag registrerat")
-    console.log(games[id].private)
 
 });
 // Ger statusen för spelet. Man kan endast se dragen om spelet redan är slut (för att undvika fusk).
@@ -95,5 +93,3 @@ app.post('*', (req,res) =>{
 
 const port = process.env.PORT || 5000;
 app.listen(port);
-
-console.log('App is listening on port ' + port);
